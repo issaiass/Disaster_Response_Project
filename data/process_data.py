@@ -30,7 +30,7 @@ def clean_data(df):
        
     Output:
     df: dataframe. The preprocessed dataframe of the 36 categories
-    """    
+    """
     # create a dataframe of the 36 individual category columns
     categories = df['categories'].str.split(';', expand=True)
     # select the first row of the categories dataframe
@@ -39,6 +39,9 @@ def clean_data(df):
     category_colnames = pd.Series(row.str.slice(0, -2))
     # rename the columns of `categories`
     categories.columns = category_colnames
+    # delete the indexes of related-2
+    related2ix = categories[categories.related == 'related-2'].index
+    categories.drop(related2ix, axis=0, inplace = True)    
     # convert column values to 1s and 0s
     for column in categories:
         # set each value to be the last character of the string
